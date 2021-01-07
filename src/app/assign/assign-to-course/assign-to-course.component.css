@@ -1,0 +1,14 @@
+.step-container{
+  padding: 2px 0.25rem;
+}
+
+.step-item{
+  display: flex;
+  align-items: center;
+  padding:0.5em;
+}
+
+.ant-form, .ant-select{
+	width: 100%;
+	max-width: 100%;
+}

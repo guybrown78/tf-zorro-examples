@@ -1,0 +1,142 @@
+<tf-ng-page-title-breadcrumbs [show-back-button]="true">
+	<span nz-typography><strong>Assign a course</strong></span>
+</tf-ng-page-title-breadcrumbs>
+
+<tf-ng-card>
+  <tf-ng-card padding="none" colour="white">
+    <tf-ng-form-title type="page">
+      <h4 nz-typography class="navy">Firstly, choose a course and then add delegates</h4>
+    </tf-ng-form-title>
+
+    <tf-ng-card-content>
+
+      <div class="step-container">
+        <div nz-row nzGutter="4">
+          <div nz-col nzFlex="130px" nz-row>
+            <span
+              nz-col nzFlex="100%"
+              class="step-item rounded"
+              [ngClass]="(currentStep===1)?'bg-blue white':'bg-grey navy'"
+            >Course Name</span>
+          </div>
+          <div nz-col nzFlex="auto">
+            <div
+              class="step-item rounded"
+              [ngClass]="(currentStep===1)?'bg-blue':'bg-grey'"
+            >
+              <nz-select
+                nzPlaceHolder="Select an item from the list"
+                [(ngModel)]="courseId"
+                (ngModelChange)="onSelectCourse()"
+              >
+                  <nz-option
+                    *ngFor="let option of courses"
+                    [nzLabel]="option.name"
+                    [nzValue]="option.id"
+                  ></nz-option>
+              </nz-select>
+              <!-- <nz-select
+                #courseSelect
+                (change)="onSelectCourse()">
+                nzPlaceHolder="Select an item from the list"
+              >
+                <nz-option nzLabel="option 1" nzValue="option1"></nz-option>
+                <nz-option nzLabel="option 2" nzValue="option2"></nz-option>
+                <nz-option nzLabel="option 3" nzValue="option3"></nz-option>
+                <nz-option nzLabel="option 4" nzValue="option4"></nz-option>
+              </nz-select> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-container">
+        <div nz-row nzGutter="4">
+          <div nz-col nzFlex="130px" nz-row>
+            <span
+              nz-col nzFlex="100%"
+              class="step-item rounded"
+              [ngClass]="(currentStep===2)?'bg-blue white':'bg-grey navy'"
+            >Delegates</span>
+          </div>
+          <div nz-col nzFlex="auto">
+            <div
+              class="step-item rounded"
+              [ngClass]="(currentStep===2)?'bg-blue':'bg-grey'"
+            >
+
+              <nz-input-group [nzPrefix]="prefixIconUserSearch">
+                <input
+                  placeholder="Enter name or add email addresses to add new people. You can add multiple emalls using a semi-colon to seperate. E,g, john@company.com; sally@company.com"
+                  nz-input
+                  id="delegate"
+                  (input)="onSearchInput($event)"
+                  [nzAutocomplete]="autoDelegate"
+                />
+                <nz-autocomplete
+                  nzBackfill
+                  #autoDelegate
+                >
+                  <nz-auto-option
+                    *ngIf="delegatesLoading"
+                    nzDisabled
+                    nzCustomContent
+                  >
+                    <i nz-icon nzType="loading" class="loading-icon"></i> Loading Delegates...
+                  </nz-auto-option>
+
+                  <ng-container *ngFor="let option of users">
+                    <nz-auto-option
+                      *ngIf="!delegatesLoading"
+                      [nzValue]="option.emailAddress"
+                      (click)="onSearchSelected(option)"
+                    >
+                    {{ option.fullName | titlecase }} - {{ option.emailAddress }}
+                    </nz-auto-option>
+                  </ng-container>
+
+                </nz-autocomplete>
+              </nz-input-group>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </tf-ng-card-content>
+
+
+  </tf-ng-card>
+
+
+  <tf-ng-card colour="white">
+
+    <form
+      nz-form
+      nzLayout="vertical"
+    >
+			<nz-form-control>
+				<label nz-checkbox>
+					<span>Reissue if already assigned</span>
+				</label>
+			</nz-form-control>
+
+			<span class="navy italic text-sm">
+				This will send a reminder email to the user for this course
+			</span>
+
+    </form>
+
+  </tf-ng-card>
+  <div nz-row nzJustify="space-between">
+    <button nz-button class="grey">cancel</button>
+    <button nz-button disabled class="aqua">Assign</button>
+  </div>
+</tf-ng-card>
+
+
+
+<ng-template #prefixIconUserSearch>
+  <i nz-icon nzType="search" nzTheme="outline"></i>
+</ng-template>
+
